@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Certificate desk</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header><div class="brand"><span class="mark">✦</span><span><span id="brandTitle">Certificate desk</span><small>Review-only prototype</small></span></div><div id="account"></div></header>
+  <main>
+    <div class="notice"><strong>Not production-ready; not a CA interface.</strong> Issuance, automatic approval and generated private keys are disabled. Submitted CSRs are not validated against policy; a review is not an authorization to issue.</div>
+    <div id="message" role="status"></div>
+    <section id="login" class="card narrow">
+      <div class="eyebrow">WELCOME BACK</div><h1>Sign in</h1><p>Use your administrator or directory credentials to continue.</p>
+      <form id="loginForm"><label>Username<input name="username" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button>Sign in</button></form>
+    </section>
+    <section id="workspace" hidden>
+      <div class="intro"><div><div class="eyebrow">WORKSPACE</div><h1>Certificate requests</h1><p>Submit a CSR and track its review status.</p></div><button id="refresh" class="secondary">Refresh</button></div>
+      <div class="grid">
+        <div class="card"><h2>New request</h2><p>Paste a PEM CSR generated on your own device. Do not paste a private key.</p><form id="requestForm"><label>Profile<select name="profileId" required id="profiles"></select></label><label>Certificate signing request<textarea name="csr" rows="8" required placeholder="-----BEGIN CERTIFICATE REQUEST-----"></textarea></label><button>Submit for review</button></form></div>
+        <div class="card"><h2>Review queue</h2><p>Reviews are recorded only. No certificates are issued.</p><div id="requests"></div></div>
+      </div>
+      <section id="admin" hidden>
+        <div class="intro"><div><div class="eyebrow">ADMINISTRATION</div><h1>Configuration</h1><p>Directory access, request retention and profile definitions.</p></div></div>
+        <div class="grid">
+          <div class="card"><h2>New profile</h2><p>Profile policy is informational until safe issuance is implemented.</p><form id="profileForm"><label>Name<input name="name" required maxlength="80"></label><label>DNS suffix<input name="suffix" placeholder="example.internal" required></label><label>Maximum validity in hours<input name="maxHours" type="number" min="1" max="8760" value="24" required></label><button>Create profile</button></form></div>
+          <div class="card"><h2>Directory and retention</h2><p>LDAPS with certificate verification is required. Saving settings signs out all sessions.</p><form id="settingsForm">
+            <label>Display title<input name="title" maxlength="80" required></label><label>Reviewed request retention (days)<input name="retentionDays" type="number" min="1" max="3650" required></label>
+            <label class="check"><input name="enabled" type="checkbox"> Enable LDAP login</label>
+            <label>LDAPS URL<input name="url" placeholder="ldaps://directory.example.com:636"></label><label>Search base DN<input name="baseDN"></label><label>Bind DN<input name="bindDN"></label><label>Bind password<input name="bindPassword" type="password" autocomplete="new-password" placeholder="Leave blank to keep existing"></label><label>User search filter<input name="filter" placeholder="(uid={{username}})"></label><label>Group attribute<input name="groupAttribute" placeholder="memberOf"></label><label>LDAP CA certificate path (optional)<input name="caFile" placeholder="/etc/ssl/ldap-ca.pem"></label>
+            <label>Admin group DN<input name="adminGroup"></label><label>Approver group DN<input name="approverGroup"></label><label>User group DN<input name="userGroup"></label><button>Save settings</button>
+          </form></div>
+        </div>
+      </section>
+    </section>
+  </main>
+  <footer>Built for careful certificate operations · Review-only preview</footer>
+</body>
+</html>
